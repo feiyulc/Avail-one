@@ -89,10 +89,14 @@ tar -xvzf avail-light-linux-amd64.tar.gz
 cp avail-light-linux-amd64 avail-light
 
 # 创建identity.toml文件
-read -p "请输入您的12位钱包助记词：" SECRET_SEED_PHRASE
-cat > identity.toml <<EOF
+if [ ! -f identity.toml ]; then
+    read -p "请输入您的12位钱包助记词：" SECRET_SEED_PHRASE
+    cat > identity.toml <<EOF
 avail_secret_seed_phrase = "$SECRET_SEED_PHRASE"
 EOF
+else
+    echo "identity.toml 文件已存在，跳过输入助记词的步骤。"
+fi
 
 # 配置 systemd 服务文件
 tee /etc/systemd/system/availd.service > /dev/null << EOF
